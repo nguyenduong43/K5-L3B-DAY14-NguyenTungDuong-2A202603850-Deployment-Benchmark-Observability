@@ -1,22 +1,22 @@
 # Deployment Information
 
 ## Public URL
-https://k5-day14-agent.up.railway.app
+https://k5-l3b-day14-nguyentungduong-2a202603850-deploym-production.up.railway.app
 
 ## Platform
-Railway (hoặc Render)
+Railway
 
 ## Test Commands
 
 ### 1. Health Check (Liveness)
 ```bash
-curl https://k5-day14-agent.up.railway.app/health
+curl https://k5-l3b-day14-nguyentungduong-2a202603850-deploym-production.up.railway.app/health
 # Expected: {"status":"ok"} (HTTP 200)
 ```
 
 ### 2. Readiness Check
 ```bash
-curl https://k5-day14-agent.up.railway.app/ready
+curl https://k5-l3b-day14-nguyentungduong-2a202603850-deploym-production.up.railway.app/ready
 # Expected: {"status":"ready"} (HTTP 200 khi Redis kết nối thành công)
 ```
 
@@ -30,7 +30,7 @@ curl -i -X POST https://k5-day14-agent.up.railway.app/ask \
 
 ### 4. API Test — Có API Key hợp lệ
 ```bash
-curl -i -X POST https://k5-day14-agent.up.railway.app/ask \
+curl -i -X POST https://k5-l3b-day14-nguyentungduong-2a202603850-deploym-production.up.railway.app/ask \
   -H "X-API-Key: $AGENT_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"question": "Hello"}'
@@ -39,8 +39,8 @@ curl -i -X POST https://k5-day14-agent.up.railway.app/ask \
 
 ## 4 Lệnh Tự Kiểm Tra (In HTTP Code, không lộ key)
 ```bash
-BASE="https://k5-day14-agent.up.railway.app"
-AGENT_API_KEY="day14-secret-key"
+BASE="https://k5-l3b-day14-nguyentungduong-2a202603850-deploym-production.up.railway.app"
+AGENT_API_KEY="day14-secret-key-123"
 
 curl -sS -o /dev/null -w '%{http_code}\n' "$BASE/health"     # 200
 curl -sS -o /dev/null -w '%{http_code}\n' "$BASE/ready"      # 200

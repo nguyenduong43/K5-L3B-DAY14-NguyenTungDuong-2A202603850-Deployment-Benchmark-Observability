@@ -153,13 +153,13 @@ Client / Web Browser
 
 ### Exercise 3.1 & 3.2: Triển khai Agent Part 6 lên Cloud Platform
 
-- **Nền tảng sử dụng:** Railway / Render
-- **Public URL:** `https://k5-day14-agent.up.railway.app` (chi tiết xem tại [DEPLOYMENT.md](DEPLOYMENT.md))
+- **Nền tảng sử dụng:** Railway
+- **Public URL:** `https://k5-l3b-day14-nguyentungduong-2a202603850-deploym-production.up.railway.app` (chi tiết xem tại [DEPLOYMENT.md](DEPLOYMENT.md))
 - **Mã nguồn triển khai:** Trực tiếp từ thư mục `06-lab-complete/` đã đạt chuẩn `PASS 12/12`.
 - **Minh chứng 4 lệnh kiểm tra:**
   ```bash
-  BASE="https://k5-day14-agent.up.railway.app"
-  AGENT_API_KEY="day14-secret-key"
+  BASE="https://k5-l3b-day14-nguyentungduong-2a202603850-deploym-production.up.railway.app"
+  AGENT_API_KEY="day14-secret-key-123"
 
   curl -sS -o /dev/null -w '%{http_code}\n' "$BASE/health"     # 200
   curl -sS -o /dev/null -w '%{http_code}\n' "$BASE/ready"      # 200

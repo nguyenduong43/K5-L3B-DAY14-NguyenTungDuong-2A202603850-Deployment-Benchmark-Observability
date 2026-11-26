@@ -1,37 +1,40 @@
-# ==========================================
-# STAGE 1: The Build Environment
-# ==========================================
-# We use a large image that includes the Go compiler and tools
-FROM golang:1.22 AS builder
+# ============================================================
+# Root Dockerfile — Production AI Agent (for Railway / Cloud deploy)
+# ============================================================
+
+# ── STAGE 1: Builder ──
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
-# Copy the rest of the source code
-COPY . .
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Compile the application into a single, statically-linked binary named "myapp"
-RUN CGO_ENABLED=0 go build -o myapp .
+COPY 06-lab-complete/requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
 
-# ==========================================
-# STAGE 2: The Production Environment
-# ==========================================
-# We switch to a completely fresh, microscopic image for production
-FROM alpine:3.19
+# ── STAGE 2: Runtime ──
+FROM python:3.11-slim AS runtime
+
+RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 WORKDIR /app
 
-# Tạo non-root user
-RUN addgroup -S appuser && adduser -S appuser -G appuser
+COPY --from=builder /root/.local /home/appuser/.local
+COPY 06-lab-complete/ .
 
-# Đặt ownership cho appuser
 RUN chown -R appuser:appuser /app
 
-# Chuyển sang non-root user
 USER appuser
 
-# CRITICAL STEP: Copy ONLY the compiled binary from the 'builder' stage
-COPY --from=builder /app/myapp .
+ENV PATH=/home/appuser/.local/bin:$PATH
+ENV PYTHONPATH=/app
+ENV PORT=8000
 
-# Expose port and define the command to run the app
-EXPOSE 8080
-CMD ["./myapp"]
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD python -c "import urllib.request, os; urllib.request.urlopen('http://localhost:' + str(os.getenv('PORT', 8000)) + '/health')" || exit 1
+
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
