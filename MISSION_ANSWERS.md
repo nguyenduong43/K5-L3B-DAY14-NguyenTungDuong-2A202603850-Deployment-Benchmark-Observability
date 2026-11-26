@@ -556,4 +556,12 @@ Output chạy thực tế của script chấm tự động `python check_product
    - **Hỏi:** Cách cấu hình file deploy `railway.toml`, `render.yaml`, viết mẫu `DEPLOYMENT.md`, so sánh hai nền tảng và phân tích pipeline CI/CD Google Cloud Run.
    - **Nhận:** Bản so sánh chi tiết giữa TOML/YAML và cơ chế secret management, phân tích 4 bước pipeline trong `cloudbuild.yaml` + `service.yaml`, file `DEPLOYMENT.md` với 4 lệnh kiểm tra HTTP code chuẩn xác không làm lộ key.
    - **Tự làm & Tự kiểm tra:** Kiểm tra các file cấu hình deploy tại `06-lab-complete/`, chuẩn bị sẵn sàng URL public và biến môi trường cho agent.
+7. **CP7 — Benchmark Hiệu năng & Chất lượng (develop):**
+   - **Hỏi:** Cách chạy load test với các mức concurrency (1, 10, 50, 100), phân tích hiện tượng tail latency qua tham số `MOCK_SLOW_RATE`, cách chạy eval so sánh v1 vs v2 và sửa Knowledge Base cho v2 đạt 100%.
+   - **Nhận:** Hướng dẫn lệnh chạy `load_test.py`, phân tích lý do đặt SLO theo percentile (p95/p99) thay vì average, bổ sung tri thức về JWT (`security-02`) và Kubernetes HPA (`scaling-03`) vào `KNOWLEDGE_BASE`.
+   - **Tự làm & Tự kiểm tra:** Chạy thực tế các lệnh load test xuất ra 7 file report JSON, chạy eval v1 (4.3%) và v2 (91.3%), sửa code mock LLM và chạy lại eval v2 đạt tuyệt đối 100% (23/23 câu đúng) với quality gate PASS.
+8. **CP8 — Observability Stack & Benchmark Scaling (production):**
+   - **Hỏi:** Sửa lỗi Dockerfile multi-stage (`ModuleNotFoundError: No module named 'uvicorn'`), hướng dẫn chạy Locust headless benchmark scale 1 vs scale 3, đọc 4 Golden Signals trên Grafana, truy vết Jaeger trace chậm & lỗi, và kích hoạt Prometheus alert firing.
+   - **Nhận:** Khắc phục triệt để cấu hình home directory và `PYTHONPATH`/`PYTHONUSERBASE` trong Dockerfile, hướng dẫn lệnh Docker Compose với project `-p k5-day14-observability`, phân tích nguyên nhân scale không giảm p95 do nút thắt nằm ở LLM provider.
+   - **Tự làm & Tự kiểm tra:** Chạy benchmark Locust headless xuất 2 bộ CSV `scale_1` và `scale_3`, chụp đủ 4 ảnh minh chứng (`grafana-dashboard.png`, `jaeger-slow-trace.png`, `jaeger-error-trace.png`, `prometheus-alert-firing.png`), đối chiếu số liệu và hoàn thiện toàn bộ `BENCHMARK_REPORT.md`.
 
